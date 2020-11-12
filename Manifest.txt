@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Created-By: 1.0.0 (Cole Gannon)
+Name: opre-java
+Specification-Title: Rust's std::Option and std::Result in Java
+Implementation-Title: opre
+Implementation-Version: 1.0.0
+Implementation-Vendor: coalpha
