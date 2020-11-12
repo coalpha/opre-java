@@ -4,10 +4,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
 
-public class Ok<ok_t, dummy_t> implements Result<ok_t, dummy_t> {
+public final class Ok<ok_t, dummy_t> implements Result<ok_t, dummy_t> {
    private final ok_t val;
 
-   public Ok(ok_t val) {
+   public Ok(final ok_t val) {
       this.val = val;
    }
 
@@ -32,7 +32,7 @@ public class Ok<ok_t, dummy_t> implements Result<ok_t, dummy_t> {
    }
 
    @Override
-   public ok_t expect(String drop) {
+   public ok_t expect(final String drop) {
       return this.val;
    }
 
@@ -42,43 +42,43 @@ public class Ok<ok_t, dummy_t> implements Result<ok_t, dummy_t> {
    }
 
    @Override
-   public ok_t unwrap_or(ok_t drop) {
+   public ok_t unwrap_or(final ok_t drop) {
       return this.val;
    }
 
    @Override
-   public ok_t unwrap_or_else(Supplier<ok_t> drop) {
+   public ok_t unwrap_or_else(final Supplier<ok_t> drop) {
       return this.val;
    }
 
    @Override
-   public <U> Result<U, dummy_t> map(Function<ok_t, U> fn) {
+   public <U> Result<U, dummy_t> map(final Function<ok_t, U> fn) {
       return new Ok<U, dummy_t>(fn.apply(this.val));
    }
 
    @Override
    public String toString() {
-      var sb = new StringBuilder("Ok(");
+      final var sb = new StringBuilder("Ok(");
       sb.append(this.val.toString());
       sb.append(')');
       return sb.toString();
    }
 
    @Override
-   public void if_ok(Consumer<ok_t> fn) {
+   public void if_ok(final Consumer<ok_t> fn) {
       fn.accept(this.val);
    }
 
    @Override
-   public void if_err(Consumer<dummy_t> drop) {}
+   public void if_err(final Consumer<dummy_t> drop) {}
 
    @Override
-   public void with_both(Consumer<ok_t> fn, Consumer<dummy_t> drop) {
+   public void with_both(final Consumer<ok_t> fn, final Consumer<dummy_t> drop) {
       fn.accept(this.val);
    }
 
    @Override
-   public <U> U fork(Function<ok_t, U> fn, Function<dummy_t, U> drop) {
+   public <U> U fork(final Function<ok_t, U> fn, final Function<dummy_t, U> drop) {
       return fn.apply(this.val);
    }
 }

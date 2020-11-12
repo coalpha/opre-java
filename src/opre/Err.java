@@ -4,10 +4,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
 
-public class Err<dummy_t, err_t> implements Result<dummy_t, err_t> {
+public final class Err<dummy_t, err_t> implements Result<dummy_t, err_t> {
    private final err_t val;
 
-   public Err(err_t val) {
+   public Err(final err_t val) {
       this.val = val;
    }
 
@@ -32,7 +32,7 @@ public class Err<dummy_t, err_t> implements Result<dummy_t, err_t> {
    }
 
    @Override
-   public dummy_t expect(String msg) {
+   public dummy_t expect(final String msg) {
       Panic.Panic(msg);
       return null;
    }
@@ -44,44 +44,44 @@ public class Err<dummy_t, err_t> implements Result<dummy_t, err_t> {
    }
 
    @Override
-   public dummy_t unwrap_or(dummy_t def) {
+   public dummy_t unwrap_or(final dummy_t def) {
       return def;
    }
 
    @Override
-   public dummy_t unwrap_or_else(Supplier<dummy_t> fn) {
+   public dummy_t unwrap_or_else(final Supplier<dummy_t> fn) {
       return fn.get();
    }
 
    @Override
    @SuppressWarnings("unchecked")
-   public <U> Result<U, err_t> map(Function<dummy_t, U> drop) {
+   public <U> Result<U, err_t> map(final Function<dummy_t, U> drop) {
       return (Result<U, err_t>) this;
    }
 
    @Override
    public String toString() {
-      var sb = new StringBuilder("Err(");
+      final var sb = new StringBuilder("Err(");
       sb.append(this.val.toString());
       sb.append(')');
       return sb.toString();
    }
 
    @Override
-   public void if_ok(Consumer<dummy_t> drop) {}
+   public void if_ok(final Consumer<dummy_t> drop) {}
 
    @Override
-   public void if_err(Consumer<err_t> fn) {
+   public void if_err(final Consumer<err_t> fn) {
       fn.accept(this.val);
    }
 
    @Override
-   public void with_both(Consumer<dummy_t> drop, Consumer<err_t> fn) {
+   public void with_both(final Consumer<dummy_t> drop, final Consumer<err_t> fn) {
       fn.accept(this.val);
    }
 
    @Override
-   public <U> U fork(Function<dummy_t, U> drop, Function<err_t, U> fn) {
+   public <U> U fork(final Function<dummy_t, U> drop, final Function<err_t, U> fn) {
       return fn.apply(this.val);
    }
 }

@@ -13,22 +13,22 @@ import java.util.function.Function;
 public interface Option<T> {
    boolean is_some();
    boolean is_none();
-   T expect(String msg);
+   T expect(final String msg);
    T unwrap();
-   T unwrap_or(T def);
-   T unwrap_or_else(Supplier<T> fn);
-   <U> Option<U> map(Function<T, U> fn);
+   T unwrap_or(final T def);
+   T unwrap_or_else(final Supplier<T> fn);
+   <U> Option<U> map(final Function<T, U> fn);
 
    String toString();
 
    // my methods
-   void if_some(Consumer<T> some);
+   void if_some(final Consumer<T> some);
 
-   void if_none(Runnable none);
+   void if_none(final Runnable none);
 
-   void with_both(Consumer<T> some, Runnable none);
+   void with_both(final Consumer<T> some, final Runnable none);
 
-   <U> U fork(Function<T, U> some, Supplier<U> none);
+   <U> U fork(final Function<T, U> some, final Supplier<U> none);
 
    /**
     * If Some, a pointer to the wrapped value.
@@ -36,7 +36,7 @@ public interface Option<T> {
     */
    Object val_ptr();
 
-   static <some_t> Some<some_t> Some(some_t val) {
+   static <some_t> Some<some_t> Some(final some_t val) {
       return new Some<>(val);
    }
 
@@ -45,9 +45,10 @@ public interface Option<T> {
       return (None<dummy_t>) None.ptr;
    }
 
-   static <T> Option<T> fromAny(T val) {
+   @SuppressWarnings("unchecked")
+   static <T> Option<T> fromAny(final T val) {
       if (val == null) {
-         return new None<>();
+         return (None<T>) None.ptr;
       }
       return new Some<>(val);
    }

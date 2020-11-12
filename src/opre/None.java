@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class None<dummy_t> implements Option<dummy_t> {
+public final class None<dummy_t> implements Option<dummy_t> {
    /** A pointer to the only None instance */
-   public static final Object ptr = new None<>();
+   public static final None<Object> ptr = new None<>();
 
-   None() {}
+   private None() {}
 
    @Override
    public boolean is_some() {
@@ -21,7 +21,7 @@ public class None<dummy_t> implements Option<dummy_t> {
    }
 
    @Override
-   public dummy_t expect(String msg) {
+   public dummy_t expect(final String msg) {
       Panic.Panic(msg);
       return null;
    }
@@ -33,7 +33,7 @@ public class None<dummy_t> implements Option<dummy_t> {
    }
 
    @Override
-   public dummy_t unwrap_or(dummy_t def) {
+   public dummy_t unwrap_or(final dummy_t def) {
       return def;
    }
 

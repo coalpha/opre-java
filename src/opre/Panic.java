@@ -4,8 +4,8 @@ public interface Panic {
    /** Never returns */
    public static void Panic() {
       System.err.println("Panic: ");
-      var stackTrace = Thread.currentThread().getStackTrace();
-      var stackLength = stackTrace.length;
+      final var stackTrace = Thread.currentThread().getStackTrace();
+      final var stackLength = stackTrace.length;
       for (var i = 2; i < stackLength; i++) {
          System.err.println("   at " + stackTrace[i].toString());
       }
@@ -13,10 +13,10 @@ public interface Panic {
    }
 
    /** Never returns */
-   public static void Panic(String msg) {
+   public static void Panic(final String msg) {
       System.err.println("Panic: " + msg);
-      var stackTrace = Thread.currentThread().getStackTrace();
-      var stackLength = stackTrace.length;
+      final var stackTrace = Thread.currentThread().getStackTrace();
+      final var stackLength = stackTrace.length;
       for (var i = 2; i < stackLength; i++) {
          System.err.println("   at " + stackTrace[i].toString());
       }
