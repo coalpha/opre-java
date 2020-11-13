@@ -15,7 +15,7 @@ public interface Result<ok_t, err_t> {
    Option<err_t> err();
    ok_t expect(final String msg);
    ok_t unwrap();
-   ok_t unwrap_or(final ok_t def);
+   ok_t unwrap_or(final ok_t val);
    ok_t unwrap_or_else(final Supplier<ok_t> fn);
    <U> Result<U, err_t> map(final Function<ok_t, U> fn);
 
@@ -30,6 +30,28 @@ public interface Result<ok_t, err_t> {
 
    <U> U fork(final Function<ok_t, U> ok, final Function<err_t, U> err);
 
+   static interface $res {
+      static boolean is_ok(final Result<?, ?> res) {
+         return res.is_ok();
+      };
+
+      static boolean is_err(final Result<?, ?> res) {
+         return res.is_err();
+      }
+
+      static <ok_t> Function<Result<ok_t, ?>, ok_t> expect(final String msg) {
+         return res -> res.expect(msg);
+      }
+
+      static <ok_t> ok_t unwrap(final Result<ok_t, ?> res) {
+         return res.unwrap();
+      }
+
+      static <ok_t> Function<Result<ok_t, ?>, ok_t> unwrap_or(final ok_t val) {
+         return res -> res.unwrap_or(val);
+      }
+   }
+
    static <ok_t, dummy_t> Ok<ok_t, dummy_t> Ok(final ok_t val) {
       return new Ok<>(val);
    }
@@ -38,7 +60,9 @@ public interface Result<ok_t, err_t> {
       return new Err<>(val);
    }
 
-   static <ok_t> Result<ok_t, Throwable> trycatch(final ThrowingSupplier<ok_t> fn) {
+   static
+   <ok_t> Result<ok_t, Throwable>
+   trycatch(final ThrowingSupplier<ok_t> fn) {
       try {
          return new Ok<>(fn.get());
       } catch (Throwable e) {
@@ -46,9 +70,30 @@ public interface Result<ok_t, err_t> {
       }
    }
 
+   @SuppressWarnings("unchecked")
+   static
+   <ok_t, err_t extends Throwable>
+   Result<ok_t, err_t>
+   trycatch(final GenericThrowingSupplier<ok_t, err_t> fn) {
+      try {
+         return new Ok<>(fn.get());
+      } catch (Throwable e) {
+         return new Err<ok_t, err_t>((err_t) e);
+      }
+   }
+
    static void ignore(final ThrowingRunnable fn) {
       try {
          fn.run();
       } catch (Throwable e) {}
+   }
+
+   static <T> T get(final ThrowingSupplier<T> fn) {
+      try {
+         return fn.get();
+      } catch (Throwable e) {
+         Panic.Panic();
+         throw new Error();
+      }
    }
 }

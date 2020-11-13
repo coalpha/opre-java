@@ -13,11 +13,14 @@ import java.util.function.Function;
 public interface Option<T> {
    boolean is_some();
    boolean is_none();
+
+   // everthing below here
    T expect(final String msg);
    T unwrap();
-   T unwrap_or(final T def);
+   T unwrap_or(final T val);
    T unwrap_or_else(final Supplier<T> fn);
    <U> Option<U> map(final Function<T, U> fn);
+   // and above here can be abstracted out
 
    String toString();
 
@@ -35,6 +38,16 @@ public interface Option<T> {
     * If None, a pointer to this.
     */
    Object val_ptr();
+
+   static interface $op {
+      static boolean is_some(Option<?> op) {
+         return op != None.ptr;
+      }
+
+      static boolean is_none(Option<?> op) {
+         return op == None.ptr;
+      }
+   }
 
    static <some_t> Some<some_t> Some(final some_t val) {
       return new Some<>(val);
