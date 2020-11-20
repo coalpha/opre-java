@@ -39,16 +39,6 @@ public interface Option<T> {
     */
    Object val_ptr();
 
-   static interface $op {
-      static boolean is_some(Option<?> op) {
-         return op != None.ptr;
-      }
-
-      static boolean is_none(Option<?> op) {
-         return op == None.ptr;
-      }
-   }
-
    static <some_t> Some<some_t> Some(final some_t val) {
       return new Some<>(val);
    }

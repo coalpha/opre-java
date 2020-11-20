@@ -30,28 +30,6 @@ public interface Result<ok_t, err_t> {
 
    <U> U fork(final Function<ok_t, U> ok, final Function<err_t, U> err);
 
-   static interface $res {
-      static boolean is_ok(final Result<?, ?> res) {
-         return res.is_ok();
-      };
-
-      static boolean is_err(final Result<?, ?> res) {
-         return res.is_err();
-      }
-
-      static <ok_t> Function<Result<ok_t, ?>, ok_t> expect(final String msg) {
-         return res -> res.expect(msg);
-      }
-
-      static <ok_t> ok_t unwrap(final Result<ok_t, ?> res) {
-         return res.unwrap();
-      }
-
-      static <ok_t> Function<Result<ok_t, ?>, ok_t> unwrap_or(final ok_t val) {
-         return res -> res.unwrap_or(val);
-      }
-   }
-
    static <ok_t, dummy_t> Ok<ok_t, dummy_t> Ok(final ok_t val) {
       return new Ok<>(val);
    }
@@ -81,6 +59,8 @@ public interface Result<ok_t, err_t> {
          return new Err<ok_t, err_t>((err_t) e);
       }
    }
+
+   static can_fail()
 
    static void ignore(final ThrowingRunnable fn) {
       try {

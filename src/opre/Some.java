@@ -1,8 +1,6 @@
 package opre;
 
-import java.util.function.Supplier;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.*;
 
 public final class Some<some_t> implements Option<some_t> {
    private final some_t val;
